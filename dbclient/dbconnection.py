@@ -2,9 +2,9 @@
 from pymongo import MongoClient
 
 
-class Connection:
+class DbConnection:
     """
-    Contains mongodb related functions.
+    Contains dbclient related functions.
     """
     HOST = 'localhost'
     PORT = 27017
@@ -46,7 +46,7 @@ class Connection:
 
 
 if __name__ == '__main__':
-    connection = Connection()
+    connection = DbConnection()
     collection = {
         'name': 'example 1',
         'id': '1'
