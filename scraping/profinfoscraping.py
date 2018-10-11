@@ -11,13 +11,16 @@ from database.mongoclientclass import MongoClientClass
 
 root = 'http://eecs.oregonstate.edu/people/faculty-directory'
 
-def scrapefn():
+def get_html():
     '''
     This functn will scrape Professor's info and print it.
     '''
     r = requests.get(root)
     soup = BeautifulSoup(r.content, 'lxml')
     tr_list = soup.find('div', id='block-system-main').find('tbody').find_all('tr')
+    return tr_list
+
+def scrapefn(tr_list):
     print ('Number of products: {}'.format(len(tr_list)))
     sample_profs = []
     for tr in tr_list:
@@ -55,4 +58,5 @@ def scrapefn():
         
 
 if __name__ == '__main__':
-    scrapefn()
+    tr_list = get_html()
+    scrapefn(tr_list)
