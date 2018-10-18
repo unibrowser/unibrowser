@@ -1,0 +1,36 @@
+[
+  {
+    "url": "http://eecs.oregonstate.edu/people/faculty-directory",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-field-title3 a"
+      },
+      "research": {
+        "select": "td.views-field.views-field-field-research-group"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-field-email2"
+      }
+    }
+  },
+  {
+    "url": "http://directory.forestry.oregonstate.edu/?name_contains=&faculty_status%5B0%5D=37&faculty_status%5B1%5D=35&items_per_page=25",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-6 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-title a"
+      },
+      "research": {
+        "select": "td.views-field.views-field-field-person-research-int-keys"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-nothing"
+      }
+    }
+  }
+]
