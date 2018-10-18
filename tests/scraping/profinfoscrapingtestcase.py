@@ -1,13 +1,12 @@
 import unittest
-from scraping.profinfoscraping import scrapefn, get_html
+from scraping.profinfoscraping import scrape_prof_data, get_html
 
 
 class testingscraping(unittest.TestCase):
     def test_instance_working(self):
-        self.assertTrue(isinstance(5, int))
-        tr_list = get_html()
-        self.assertTrue(isinstance(tr_list, list))
-        self.assertTrue(len(tr_list) > 0)
+        url = "http://eecs.oregonstate.edu/people/faculty-directory"
+        soup = get_html(url)
+        self.assertTrue(len(soup.getText()) > 0)
 
 
 if __name__ == '__main__':
