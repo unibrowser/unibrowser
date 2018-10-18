@@ -1,3 +1,8 @@
+# Sets the execution path
+import sys
+import os
+sys.path.insert(0, os.path.realpath('./'))
+
 import json
 import requests
 from bs4 import BeautifulSoup
@@ -33,7 +38,7 @@ def save_prof_data(professors):
 
 
 if __name__ == '__main__':
-    with open('../config/prof_input_structure.json', 'r') as f:
+    with open('config/prof_input_structure.json', 'r') as f:
         jsonList = json.load(f)
 
     prof_list = []
