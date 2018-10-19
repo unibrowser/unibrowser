@@ -1,5 +1,5 @@
 import unittest
-from scrapping.faqscrapper import cleanQuestions, getLastAnswer, cleanAnswer, getAnswers, getFaqOfLink 
+from scrapping.faqscraper import cleanQuestions, getLastAnswer, cleanAnswer, getAnswers, getFaqOfLink 
 
 class testingscraping(unittest.TestCase):
     def test_instance_working(self):
