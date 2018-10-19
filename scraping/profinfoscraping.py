@@ -33,8 +33,15 @@ def scrape_prof_data(soup, data_structure):
 
 
 def save_prof_data(professors):
-    mongo_client_instance = MongoClientClass(host='localhost', port=27017, db='unibrowser')
-    mongo_client_instance.insert(collection='professor', documents=professors)
+    try: 
+        mongo_client_instance = MongoClientClass(host='localhost', port=27017, db='unibrowser')
+        mongo_client_instance.insert(collection='professor', documents=professors)
+    except Exception as e:
+        print(e)
+        print("inside save_prof_data: 0 (exception)")
+        return 0
+    print("inside save_prof_data: 1 (success)")
+    return 1
 
 
 if __name__ == '__main__':
