@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Manual QA entry</title>
+        <link rel="stylesheet" href="static/css/feedqa.css" />
+    </head>
+    <body>
+        <div id="main">
+            <div class="form" id="form-feedqa">
+                <div id="fields" class="fields-container">
+                    <label for="link">Link</label>
+                    <input name="link" id="txt-link" type="text"/>
+                    <label for="question">Question</label>
+                    <input class="questions" name="question-1" type="text" id="txt-question-1"/>
+                    <label for="answer">Answer</label>
+                    <textarea class="answers" name="answer-1" id="ta-answer-1" cols="30" rows="10"></textarea>
+                </div>
+                <button id="btn-submit">Submit</button>
+            </div>
+            <button id="btn-add-qa">Add QA</button>
+        </div>
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+        <script src="static/js/feedqa.js"></script>
+    </body>
+</html>
