@@ -1,7 +1,7 @@
 import re
 import httplib2
 from bs4 import BeautifulSoup                    
-from .faqscraperutil import stripExtra, convertToJsonList, saveToMongo
+from faqscraperutil import stripExtra, convertToJsonList, saveToMongo
 from database.mongoclientclass import MongoClientClass
 
 faqLinks = 'faq_links.txt'
