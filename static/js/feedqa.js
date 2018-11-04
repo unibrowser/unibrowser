@@ -1,3 +1,13 @@
+$(function(){
+    $.each($(".questions"), function(index, value){
+        $(value).val("");
+    })
+    $.each($(".answers"), function(index, value){
+        $(value).val("");
+    })
+    $("#txt-link").val("");
+})
+
 var button = document.getElementById("btn-add-qa");
 var currentQuestionNos = 1;
 console.log(button);

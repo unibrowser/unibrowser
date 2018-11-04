@@ -10,14 +10,6 @@ def create_app():
     def hello_world():
         return 'Hello World!'
 
-    # @app.route('/js/<path:path>')
-    # def sendJS():
-    #     return send_from_directory("static/js", path)
-
-    # @app.route('/css/<path:path>')
-    # def sendCSS():
-    #     return send_from_directory("static/css", path)
-
     @app.route('/feedqa', methods=['GET', 'POST'])
     def feedQA():
         if request.method == 'GET':
@@ -28,9 +20,9 @@ def create_app():
             isQuestion = re.compile(r"questions")
             isAnswer = re.compile(r"answers")
             for key, value in request.form.items():
+                print(key, value)
                 if isQuestion.match(key) is not None: questions = value.split(",")
                 if isAnswer.match(key) is not None: answers = value.split(",")
-            print("Output", link, questions, answers)
             jsonList = convertToJsonList(link, questions, answers)
             saveToMongo(jsonList, "faq")
             return render_template("feedqa.html")
