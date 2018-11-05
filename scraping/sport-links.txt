@@ -1,0 +1,17 @@
+Basketball (M)|https://pac-12.com/oregon-state-mens-basketball/schedule/20180801-20190731
+Baseball|https://pac-12.com/oregon-state-baseball/schedule/20180801-20190731
+Basketball (M)|https://pac-12.com/oregon-state-womens-basketball/schedule/20180801-20190731
+Football|https://pac-12.com/oregon-state-football/schedule/20180801-20190731
+Golf (M)|https://pac-12.com/oregon-state-mens-golf/schedule/20180801-20190731
+Cross Country|https://pac-12.com/oregon-state-cross-country/schedule/20180801-20190731
+Golf (W)|https://pac-12.com/oregon-state-womens-golf/schedule/20180801-20190731
+Gymnastics (W)|https://pac-12.com/oregon-state-womens-gymnastics/schedule/20180801-20190731
+Rowing (M)|https://pac-12.com/oregon-state-mens-rowing/schedule/20180801-20190731
+Rowing (W)|https://pac-12.com/oregon-state-womens-rowing/schedule/20180801-20190731
+Soccer (M)|https://pac-12.com/oregon-state-mens-soccer/schedule/20180801-20190731
+Soccer (W)|https://pac-12.com/oregon-state-womens-soccer/schedule/20180801-20190731
+Softball|https://pac-12.com/oregon-state-softball/schedule/20180801-20190731
+Swim & Dive (W)|https://pac-12.com/oregon-state-womens-swimming-diving/schedule/20180801-20190731
+Track & Field|https://pac-12.com/oregon-state-track-field/schedule/20180801-20190731
+Volleyball (W)|https://pac-12.com/oregon-state-womens-volleyball/schedule/20180801-20190731
+Wrestling|https://pac-12.com/oregon-state-wrestling/schedule/20180801-20190731
