@@ -1,18 +1,16 @@
 import re
 import httplib2
 from bs4 import BeautifulSoup                    
-from faqscraperutil import stripExtra, convertToJsonList, saveToMongo
-from database.mongoclientclass import MongoClientClass
-
-faqLinks = 'faq_links.txt'
-collectionName = 'faq'
+from scraping.faqscrapperutil import stripExtra, removeDuplicates, removeBlackListedQuestions, getBlackListedQuestions, convertToJsonList, saveToMongo
+from scraping.Constants import ENABLE_CUSTOM_QUESTIONS_FILTER, FAQ_LINKS, COLLECTION_NAME
 
 
 def cleanQuestions(questions):
     questionList = []
     for question in questions:
         questionList.append(stripExtra(question.lstrip().rstrip()))
-    return questionList
+
+    return removeDuplicates(questionList)
 
 def getLastAnswer(question, bodyText):
     start = bodyText.index(question) + len(question)
@@ -55,20 +53,32 @@ def getAnswers(body, questions):
     questionCount = len(questions)
     answerList = []
     for i in range(0, questionCount):
-#         print('Q: ', questions[i])
+        print('Q: ', questions[i])
         if i  == questionCount - 1:
             #Last element
             answer = getLastAnswer(questions[i], bodyText)
         else :
             start = bodyText.index(questions[i]) + len(questions[i])
-            end = bodyText.index(questions[i + 1])
+            end = bodyText.index(questions[i + 1], start, -1)
+            print("Start : ", start , " End : ", end)
             soup1 = BeautifulSoup(bodyText[start : end], 'html.parser')
+#             print(soup1)
             answer = soup1.getText().lstrip()
-       
+            
         answer = cleanAnswer(answer)
         answerList.append(answer)
-#         print('A: ', answer)     
+        print('A: ', answer)     
     return answerList
+
+def processWithCustomQuestions(questions):
+#     isCustomQuestionsEnabled = checkConfigForFlag(ENABLE_CUSTOM_QUESTIONS_FILTER)
+#     print("isCustomQuestionsEnabled : ", isCustomQuestionsEnabled)
+    if ENABLE_CUSTOM_QUESTIONS_FILTER == False:
+        return
+    blackListedQuestions = getBlackListedQuestions()
+    removeBlackListedQuestions(questions, blackListedQuestions)
+    print(questions)
+
 
 def getFaqOfLink(link):
 #     print("LINK : ", link)
@@ -78,23 +88,24 @@ def getFaqOfLink(link):
     body = soup.body
     questions = cleanQuestions(soup(text=re.compile(r'\s*((?:how|How|Can|can|what|What|where|Where|describe|Describe|Who|who|When|when|Why|why|Should|should|is|Is|I|Do|do|Are|are|Will|will)[^.<>?]*?\s*\?)')))
 #     print(questions)
+    processWithCustomQuestions(questions)
     answerList = getAnswers(body, questions)
     return questions, answerList
 
-
-    
-# link = "https://admissions.oregonstate.edu/international-admissions-faq-frequently-asked-questions"
+# link = "https://transportation.oregonstate.edu/aabc/frequently-asked-questions"
 # questions, answerList = getFaqOfLink(link)
+
+
 if __name__== "__main__":
-    with open(faqLinks, 'r') as myfile:
-        faqLinks = myfile.read().split('\n')
-    
+    with open(FAQ_LINKS, 'r') as myfile:
+        FAQ_LINKS = myfile.read().split('\n')
+      
     faqJsonList = []
-    for i in range(0, len(faqLinks)):
-        link = faqLinks[i]
+    for i in range(0, len(FAQ_LINKS)):
+        link = FAQ_LINKS[i]
         questions, answerList = getFaqOfLink(link)
         jsonList = convertToJsonList(link, questions, answerList)
         faqJsonList.extend(jsonList)
-    
+      
 #     saveJsonToFile(faqJsonList, "output.txt")    
-    saveToMongo(faqJsonList, collectionName)
+    saveToMongo(faqJsonList, COLLECTION_NAME)
