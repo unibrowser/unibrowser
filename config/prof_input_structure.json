@@ -134,5 +134,124 @@
         "select": "td.views-field.views-field-building-and-room"
       }
     }
+  },
+  {
+    "url": "http://oregonstate.edu/foodsci/faculty-and-staff",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-field-people-lname-value a"
+      },
+      "research": {
+        "select": "td.views-field.views-field-field-people-position-sub-value"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-field-contact-phone-office-value"
+      }
+    }
+  },
+  {
+    "url": "https://horticulture.oregonstate.edu/department-horticulture/people/faculty",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4.table.table-0.table-0.table-0.table-0 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-name a"
+      },
+      "research": {
+        "select": "td.views-field.views-field-career-interests"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-phone-office"
+      }
+    }
+  },
+  {
+    "url": "https://mmi.oregonstate.edu/people/research-staff",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-nothing a"
+      },
+      "research": {
+        "value": "Marine Mammal Institute"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-nothing-1"
+      }
+    }
+  },
+  {
+    "url": "https://mime.oregonstate.edu/faculty-and-staff/research-faculty",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-5 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-field-people-lname a"
+      },
+      "research": {
+        "select": "td.views-field.views-field-field-research-clusters"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-field-faculty-affiliation"
+      }
+    }
+  },
+  {
+    "url": "https://cbee.oregonstate.edu/faculty-staff-directory",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-field-people-lname a"
+      },
+      "research": {
+        "value": "Chemical, Biological & Environmental Engineering"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-field-contact-phone-office"
+      }
+    }
+  },
+  {
+    "url": "https://cce.oregonstate.edu/faculty-and-staff",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-field-people-lname a"
+      },
+      "research": {
+        "select": "td.views-field.views-field-field-people-position-sub strong"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-field-contact-phone-office span"
+      }
+    }
+  },
+  {
+    "url": "https://ne.oregonstate.edu/faculty-and-staff",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-field-people-lname a"
+      },
+      "research": {
+        "value": "Nuclear Science & Engineering"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-field-contact-phone-office span"
+      }
+    }
   }
 ]
