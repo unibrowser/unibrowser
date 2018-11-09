@@ -15,3 +15,8 @@ TWITTER_INFO={
 	'username': "@okstatefood",
 	'max_tweets': 199
 }
+
+DATE_SELECT={
+	'today_list': ['noon','morning','today','tonight','this evening'],
+	'tomorrow_list': ['tomorrow','next day']
+}
