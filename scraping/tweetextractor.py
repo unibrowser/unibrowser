@@ -101,23 +101,21 @@ def store_tweets(tweet_info):
             # Store tweet information in a dictionary
             tweet_dict=dict()
 
-            # Store the event date
-            tweet_dict["event_date"]=event_date
-            
-            # Fetch the media link
+            # Store the required fields
+            tweet_dict["event_date"]=event_date            
+            tweet_dict["id"]=tweet.id_str
+            # URL for the tweet
+            tweet_url = "https://twitter.com/statuses/"+tweet.id_str     
+            tweet_dict["url"] = tweet_url     
+            tweet_dict["screen_name"]= tweet.user.screen_name
             media = tweet.entities.get('media', [])
             if(len(media) > 0):
-                tweet_dict["url"]=media[0]['media_url']
+                tweet_dict["media_url"]=media[0]['media_url']
             else:
-                tweet_dict["url"]=""
-
-            # Tweet id
-            tweet_dict["id"]=tweet.id_str
+                tweet_dict["media_url"]=""
             
-            # Extracting the text of the tweet
             tweet_dict["description"]=tweet.full_text
             # tweet_info["text"]=tweet.text.encode('utf8')
-            
             tweet_dict["location"]="OSU"
             
             # Store tweet in the dictionary
@@ -144,6 +142,15 @@ def extract_date(tweet_text):
                                 event_date = datetime.datetime.today() + timedelta(days=1)
     return event_date
 
+# Function to check if the keywords are present in the text
+# def check_text(tweet_text):
+#     keywords_list = freefood_config.TWITTER_INFO['keywords']
+#     for word in keywords_list:
+#         if word in tweet_text.lower():
+#             return 1
+#     print(tweet_text)
+#     return 0
+
 if __name__ == '__main__':
     try:
         # Delete existing documents from the collection freefood
@@ -165,6 +172,7 @@ if __name__ == '__main__':
                 res=mongo_client_instance.insert(collection='freefood', documents=extracted_docs)
             else:
                 print("No tweets found.")
+
     except:
         print('Error Occured.')
         raise
