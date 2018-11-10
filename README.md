@@ -34,6 +34,9 @@ from config import DATABASE_CONFIG # or whichever config you need to load
 ...
 ```
 
+### Data and Additional Files
+All additional files required by the python scripts live under the `etc/` directory.
+
 ### Running the Scripts
 All scripts should be run from the root of the repository. For example, if you want to run the free food data extractor, run `python scraping/tweetextractor.py`.
 
