@@ -35,3 +35,7 @@ FREE_FOOD_CONFIG = {
         'tomorrow_list': ['tomorrow', 'next day']
     }
 }
+
+EVENT_CONFIG = {
+    'db_collection': 'events'
+}
