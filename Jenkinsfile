@@ -2,7 +2,7 @@ pipeline {
     agent {
         dockerfile {
             filename 'jenkins/Dockerfile.agent'
-            args '-v /var/run/docker.sock:/var/run/docker.sock --network unibrowser-test-net'
+            args '-v /var/run/docker.sock:/var/run/docker.sock -u root --network unibrowser-test-net'
         }
     }
     environment {

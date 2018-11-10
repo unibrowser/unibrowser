@@ -6,3 +6,5 @@ RUN apk add --update \
     && adduser root docker \
     && adduser root dockerh \
     && rm -rf /var/cache/apk/*
+
+USER root
