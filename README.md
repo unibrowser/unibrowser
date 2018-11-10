@@ -1,4 +1,4 @@
-# Unibrowser Backend Scapers
+# Unibrowser Backend Scrapers
 Data acquisition scripts to assist with populating the Unibrowser database with useful university information
 
 ## For Developers
