@@ -1,0 +1,10 @@
+pymongo
+httplib2
+bs4
+nltk
+requests
+datefinder
+tweepy
+datetime
+lxml
+pytest

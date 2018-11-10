@@ -1,5 +1,5 @@
 import unittest
-from scrapping.faqscraperutil import stripExtra, getTags, convertToJsonList, saveToMongo 
+from scraping.faqscraperutil import stripExtra, getTags, convertToJsonList, saveToMongo 
 
 class testingscraping(unittest.TestCase):
     def test_instance_working(self):

@@ -1,0 +1,8 @@
+FROM python:3.6-alpine
+
+RUN apk add --update \
+        docker \
+    && addgroup --gid 993 dockerh \
+    && adduser root docker \
+    && adduser root dockerh \
+    && rm -rf /var/cache/apk/*

@@ -1,7 +1,7 @@
 import re
 import httplib2
 from bs4 import BeautifulSoup                    
-from scraping.faqscrapperutil import stripExtra, removeDuplicates, removeBlackListedQuestions, getBlackListedQuestions, convertToJsonList, saveToMongo
+from scraping.faqscraperutil import stripExtra, removeDuplicates, removeBlackListedQuestions, getBlackListedQuestions, convertToJsonList, saveToMongo
 from scraping.Constants import ENABLE_CUSTOM_QUESTIONS_FILTER, FAQ_LINKS, COLLECTION_NAME
 
 

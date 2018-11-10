@@ -1,3 +1,6 @@
+from os import path
+
+FILE_DIRECTORY = dir_path = path.dirname(path.realpath(__file__))
 
 FAQ_LINKS = 'faq_links.txt'
 COLLECTION_NAME = 'faq'
@@ -8,4 +11,4 @@ LINK = 'link'
 TAGS = 'tags'
 TITLE = 'title'
 ANSWER = "a"
-QUESTION_BLACK_LIST = "QuestionBlackList.txt"
+QUESTION_BLACK_LIST = path.join(FILE_DIRECTORY, "QuestionBlackList.txt")

@@ -1,7 +1,14 @@
-# unibrowser
-Optimized search engine for universities and college towns
+# Unibrowser Backend Scapers
+Data acquisition scripts to assist with populating the Unibrowser database with useful university information
 
-# Please install the below dependencies for freefood module.
+## For Developers
+The scripts are developed using **Python version 3.6**. Unit tests are done using `pytest`. The best way to develop this project is to use a virtual python environment and install the necessary dependencies, modifying the `requirements.txt` file as needed to add new dependencies.
 
-pip3 install datefinder
-pip install git+https://github.com/tweepy/tweepy
+### Dependency Installation
+To install the necessary dependencies on your system, the following pre-requisites needs to be met:
+- `python-dev` and `python3-dev` system packages are installed (used when compiling certain library dependencies)
+
+```text
+> pip install -r requirements.txt
+> python setup.py
+```
