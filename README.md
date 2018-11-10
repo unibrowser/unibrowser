@@ -47,4 +47,4 @@ Unit testing is completed using `pytest`. To run the unit tests, simply type the
 > pytest
 ```
 
-This will run the tests and generate a report of the results. The `pytest.ini` file at the root of the repo defines configuratio for the `pytest` module.
+This will run the tests and generate a report of the results. The `pytest.ini` file at the root of the repo defines configuration for the `pytest` module.
