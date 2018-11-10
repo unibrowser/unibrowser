@@ -20,7 +20,8 @@ Configuration for the production environment, test environment, and development 
 - `user.py`: (not checked in, ignored) developer configuration specific to each user. SHOULD NOT BE CHECKED IN.
 
 The loaded configuration is dependent upon the `UNI_MODE` environment variable. The following table describes the behavior of configuration based on this variable:
-| Environment Variale | Value | Effect |
+
+| Environment Variable | Value | Effect |
 |---|---|---|
 | `UNI_MODE` | `production` | Load the `prod.py` file contents |
 | `UNI_MODE` | `test` | Load the `test.py` file contents |
