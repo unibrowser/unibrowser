@@ -39,3 +39,13 @@ FREE_FOOD_CONFIG = {
 EVENT_CONFIG = {
     'db_collection': 'events'
 }
+
+SPORTS_CONFIG = {
+    'links': path.join(ETC, 'sports-links.txt')
+}
+
+BUS_CONFIG = {
+    'db_collection': 'locations',
+    'config_file': path.join(ETC, 'bus-config.json'),
+    'lat_lng_info_file': path.join(ETC, 'lat-lng-info.json')
+}

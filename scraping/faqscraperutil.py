@@ -1,3 +1,4 @@
+import json
 import re
 import nltk
 from nltk.corpus import stopwords
@@ -7,11 +8,7 @@ from config import FAQ_CONFIG
 LINK = 'link'
 TAGS = 'tags'
 TITLE = 'title'
-ANSWER = 'a'
-
-# def readFile(fileName):
-#     with open(fileName, 'r') as myfile:
-#         return myfile.read()
+ANSWER = "a"
 
 
 def stripExtra(text):
@@ -22,14 +19,19 @@ def stripExtra(text):
     return text
 
 
-def getTags(textList):
+def getTags(sentence):
+    clean_text = re.sub(r'[^\w\s]', '', sentence)
+
     sw = stopwords.words('english')
     tagsList = []
-    for text in textList:
+    for text in clean_text.split():
         tokenized = nltk.word_tokenize(text)
         tokens = [t for t in tokenized if t not in sw]
-        tagsList.append(tokens)
+        if len(tokens) > 0:
+            tagsList.extend(tokens)
     return tagsList
+
+# print(getTags("Hello my name is Anand?"))
 
 
 def convertToJsonList(link, questions, answerList):
@@ -50,12 +52,10 @@ def convertToJsonList(link, questions, answerList):
     return jsonDataList
 
 
-def saveToMongo(jsonList, COLLECTION_NAME):
+def saveToMongo(jsonList, FAQ):
     try:
-        mongo_client_instance = MongoClientClass(
-            host='localhost', port=27017, db='unibrowser')
-        mongo_client_instance.insert(
-            collection=FAQ_CONFIG['db_collection'], documents=jsonList)
+        mongo_client_instance = MongoClientClass()
+        mongo_client_instance.insert(collection=FAQ, documents=jsonList)
     except Exception as e:
         print(e)
         print("inside save_prof_data: 0 (exception)")

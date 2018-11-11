@@ -14,7 +14,6 @@ consumer_key = TWITTER_CONFIG['consumer_key']
 consumer_secret = TWITTER_CONFIG['consumer_secret']
 access_key = TWITTER_CONFIG['access_key']
 access_secret = TWITTER_CONFIG['access_secret']
-print(consumer_key)
 
 # Authorization to consumer key and consumer secret
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
