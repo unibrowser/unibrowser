@@ -1,15 +1,16 @@
 # mongoclientclass.py
 from pymongo import MongoClient
 from pymongo.results import InsertManyResult
+from config import DATABASE_CONFIG
 
 
 class MongoClientClass:
     """
     Contains database related functions.
     """
-    HOST = 'localhost'
-    PORT = 27017
-    DB = 'test'
+    HOST = DATABASE_CONFIG['host']
+    PORT = DATABASE_CONFIG['port']
+    DB = DATABASE_CONFIG['dbname']
     COLLECTION = 'examples'
 
     def __init__(self, host=None, port=None, db=None):

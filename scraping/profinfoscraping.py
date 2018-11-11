@@ -9,6 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from database.mongoclientclass import MongoClientClass
+from config import PROFESSOR_CONFIG
 
 
 def get_html(url):
@@ -84,7 +85,8 @@ if __name__ == '__main__':
     # 7. https://fw.oregonstate.edu/fisheries-and-wildlife/directory/faculty - Department of Fisheries and Wildlife
     # 8. https://ib.oregonstate.edu/directory/faculty - Department of Integrative Biology
     # 9. http://ceoas.oregonstate.edu/people/ - College of Earth, Ocean, and Atmospheric Sciences
-    with open('config/prof_input_structure.json', 'r') as f:
+    structure = PROFESSOR_CONFIG['structure']
+    with open(structure, 'r') as f:
         jsonList = json.load(f)
 
     prof_list = []

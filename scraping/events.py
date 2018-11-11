@@ -2,13 +2,13 @@
 # Sets the execution path
 import sys
 import os
-sys.path.insert(0, os.path.realpath('./'))
-
 import feedparser
 from database.mongoclientclass import MongoClientClass
+from config import DATABASE_CONFIG, EVENT_CONFIG
 
 campusLife = "https://today.oregonstate.edu/releases/feed/campus-life"
 eventsUrl = "https://events.oregonstate.edu/calendar.xml"
+
 
 def extractRSSFeed():
     events = feedparser.parse(eventsUrl)
@@ -26,10 +26,13 @@ def extractRSSFeed():
         del(event["updated_parsed"])
     return eventsList
 
+
 def saveToMongo(jsonList, COLLECTION_NAME):
     try:
-        mongo_client_instance = MongoClientClass(host='localhost', port=27017, db = 'unibrowser')
-        mongo_client_instance.insert(collection = COLLECTION_NAME, documents = jsonList)
+        mongo_client_instance = MongoClientClass(
+            host=DATABASE_CONFIG['host'], port=DATABASE_CONFIG['port'], db=DATABASE_CONFIG['dbname'])
+        mongo_client_instance.insert(
+            collection=COLLECTION_NAME, documents=jsonList)
     except Exception as e:
         print(e)
         print("inside save_event_data: 0 (exception)")
@@ -37,7 +40,8 @@ def saveToMongo(jsonList, COLLECTION_NAME):
     print("inside save_event_data: 1 (success)")
     return 1
 
-if __name__== "__main__":
+
+if __name__ == "__main__":
 
     eventJsonList = extractRSSFeed()
-    saveToMongo(eventJsonList, "events")
+    saveToMongo(eventJsonList, EVENT_CONFIG['db_collection'])

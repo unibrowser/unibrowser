@@ -1,19 +1,22 @@
 # Sets the execution path
 import sys
 import os
-sys.path.insert(0, os.path.realpath('./'))
-
 import json
-
 from datetime import datetime
-
 from database.mongoclientclass import MongoClientClass
 from scraping.scrape_utils import get_html
+from config import BUS_CONFIG
 
 
 WEEK_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
 WEEKENDS = ['Saturday']
 HOLIDAYS = ['Sunday']
+
+LAT = 'lat'
+LONG = 'long'
+IMAGE = 'image'
+DESC = 'desc'
+ADDRESS = 'address'
 
 
 def scrape_row_data(soup, cur_bus_name, location_info):
@@ -47,15 +50,17 @@ def scrape_row_data(soup, cur_bus_name, location_info):
                     else:
                         cur_time = cur_time + ' AM'
                     cur_time = datetime.strptime(cur_time, '%I:%M %p')
-                    location_info[lat_lngs[i]][week_day][cur_bus_name].append(cur_time.strftime('%H:%M'))
+                    location_info[lat_lngs[i]][week_day][cur_bus_name].append(
+                        cur_time.strftime('%H:%M'))
                 except Exception as e:
                     print("Unable to parse time:", cur_time)
 
 
 def save_loc_data(locations):
     try:
-        mongo_client_instance = MongoClientClass(host='localhost', port=27017, db='unibrowser')
-        mongo_client_instance.insert(collection='locations', documents=locations)
+        mongo_client_instance = MongoClientClass()
+        mongo_client_instance.insert(
+            collection=BUS_CONFIG['db_collection'], documents=locations)
     except Exception as e:
         print(e)
         # print("inside save_prof_data: 0 (exception)")
@@ -65,9 +70,11 @@ def save_loc_data(locations):
 
 
 if __name__ == '__main__':
-    with open('config/bus-config.json', 'r') as f:
+    bus_config = BUS_CONFIG['config_file']
+    lat_lng = BUS_CONFIG['lat_lng_info_file']
+    with open(bus_config, 'r') as f:
         json_config = json.load(f)
-    with open('config/lat-lng-info.json', 'r') as f:
+    with open(lat_lng, 'r') as f:
         lat_lng_config = json.load(f)
 
     location_info = {}

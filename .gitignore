@@ -3,6 +3,9 @@ __pycache__/
 .idea/
 .pytest_cache/
 /venv
-config/freefood_config.py
+/config/*
+!/config/test.py
+!/config/prod.py
+!/config/prof_input_structure.json
 tests/Test results/
 .vscode/

@@ -1,16 +1,15 @@
 import sys
 import os
 import json
-sys.path.insert(0, os.path.realpath('./'))
-
 import unittest
 from scraping.profinfoscraping import scrape_prof_data, get_html, save_prof_data
+from config import PROFESSOR_CONFIG
 
 
 class testingscraping(unittest.TestCase):
     def test_instance_working(self):
         url = "http://eecs.oregonstate.edu/people/faculty-directory"
-        with open('config/prof_input_structure.json', 'r') as f:
+        with open(PROFESSOR_CONFIG['structure'], 'r') as f:
             jsonList = json.load(f)
             jsonObject = jsonList[0]
 

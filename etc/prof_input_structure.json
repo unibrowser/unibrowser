@@ -1,0 +1,257 @@
+[
+  {
+    "url": "http://eecs.oregonstate.edu/people/faculty-directory",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-field-title3 a"
+      },
+      "research": {
+        "select": "td.views-field.views-field-field-research-group"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-field-email2"
+      }
+    }
+  },
+  {
+    "url": "http://directory.forestry.oregonstate.edu/?name_contains=&faculty_status%5B0%5D=37&faculty_status%5B1%5D=35&items_per_page=25",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-6 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-title a"
+      },
+      "research": {
+        "select": "td.views-field.views-field-field-person-research-int-keys"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-nothing"
+      }
+    }
+  },
+  {
+    "url": "https://liberalarts.oregonstate.edu/directory",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4.table.table-0.table-0.table-0.table-0 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-nothing.profile-position a"
+      },
+      "research": {
+        "value": "College of Liberal Arts"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-building-and-room"
+      }
+    }
+  },
+  {
+    "url": "https://health.oregonstate.edu/people",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-5.table.table-0.table-0.table-0.table-0 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-nothing.profile-position a"
+      },
+      "research": {
+        "value": "Public Health & Human Sciences"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-building-and-room"
+      }
+    }
+  },
+  {
+    "url": "https://agsci.oregonstate.edu/agricultural-education-and-agricultural-sciences/people",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-nothing a"
+      },
+      "research": {
+        "value": "Agricultural Education and Agricultural Sciences"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-nothing-1"
+      }
+    }
+  },
+  {
+    "url": "https://liberalarts.oregonstate.edu/slcs/anthropology/faculty-staff-directory",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-5.table.table-0.table-0.table-0.table-0 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-nothing.profile-position a"
+      },
+      "research": {
+        "value": "Anthropology"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-building-and-room"
+      }
+    }
+  },
+  {
+    "url": "https://appliedecon.oregonstate.edu/applied-economics/people/faculty",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4.table.table-0.table-0.table-0.table-0 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-name a"
+      },
+      "research": {
+        "select": "td.views-field.views-field-career-interests"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-phone-office"
+      }
+    }
+  },
+  {
+    "url": "https://liberalarts.oregonstate.edu/school-arts-and-communication/art/faculty-staff-directory/emeritus-faculty-directory",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-3.table.table-0.table-0.table-0.table-0 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-nothing.profile-position a"
+      },
+      "research": {
+        "value": "Art"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-building-and-room"
+      }
+    }
+  },
+  {
+    "url": "http://oregonstate.edu/foodsci/faculty-and-staff",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-field-people-lname-value a"
+      },
+      "research": {
+        "select": "td.views-field.views-field-field-people-position-sub-value"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-field-contact-phone-office-value"
+      }
+    }
+  },
+  {
+    "url": "https://horticulture.oregonstate.edu/department-horticulture/people/faculty",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4.table.table-0.table-0.table-0.table-0 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-name a"
+      },
+      "research": {
+        "select": "td.views-field.views-field-career-interests"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-phone-office"
+      }
+    }
+  },
+  {
+    "url": "https://mmi.oregonstate.edu/people/research-staff",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-nothing a"
+      },
+      "research": {
+        "value": "Marine Mammal Institute"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-nothing-1"
+      }
+    }
+  },
+  {
+    "url": "https://mime.oregonstate.edu/faculty-and-staff/research-faculty",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-5 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-field-people-lname a"
+      },
+      "research": {
+        "select": "td.views-field.views-field-field-research-clusters"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-field-faculty-affiliation"
+      }
+    }
+  },
+  {
+    "url": "https://cbee.oregonstate.edu/faculty-staff-directory",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-field-people-lname a"
+      },
+      "research": {
+        "value": "Chemical, Biological & Environmental Engineering"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-field-contact-phone-office"
+      }
+    }
+  },
+  {
+    "url": "https://cce.oregonstate.edu/faculty-and-staff",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-field-people-lname a"
+      },
+      "research": {
+        "select": "td.views-field.views-field-field-people-position-sub strong"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-field-contact-phone-office span"
+      }
+    }
+  },
+  {
+    "url": "https://ne.oregonstate.edu/faculty-and-staff",
+    "data": {
+      "list": {
+        "select": "table.views-table.cols-4 tbody tr"
+      },
+      "name": {
+        "select": "td.views-field.views-field-field-people-lname a"
+      },
+      "research": {
+        "value": "Nuclear Science & Engineering"
+      },
+      "contact": {
+        "select": "td.views-field.views-field-field-contact-phone-office span"
+      }
+    }
+  }
+]
