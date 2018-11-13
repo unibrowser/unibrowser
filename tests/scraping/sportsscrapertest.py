@@ -1,25 +1,27 @@
 import unittest
-# from scrapping.sportsscraper import 
+from scraping.sportsscraper import getDivs, getMatchDetails, getMatchMeta
 
 class testingscraping(unittest.TestCase):
     def test_instance_working(self):
         #This particular faq page has 8 question & answers
-        url = "https://engineering.oregonstate.edu/frequently-asked-questions"
         
-        # unit test cleanQuestions()
-#         question = "   When can I seek \nadmission"
-#         questionList = []
-#         questionList.append(question)
-#         self.assertTrue(cleanQuestions(questionList)[0] == "When can I seek admission")
-#         
-#         # unit test for cleanAnswer()
-#         answer = "Admissions start on the 12th of December.        </div>   "
-#         questionList.append(question)
-#         self.assertTrue(cleanAnswer(answer) == "Admissions start on the 12th of December.")  
-#         
-#         # unit test for getFaqOfLink(), getAnswers(), getLastAnswer()
-#         questions, answerList = getFaqOfLink(url)
-#         self.assertTrue(len(questions) == 8 and len(answerList) == 8)  
+        url = "https://pac-12.com/oregon-state-mens-basketball/schedule/20180801-20190731"
+        divs = getDivs(url)
+        print("Running Test for getDivs")
+        self.assertTrue(len(divs) > 0)
+
+        data = {}
+        getMatchDetails(divs[0], data)
+        print("Running Test for getMatchDetails")
+        self.assertTrue(data['home'] is not None)
+
+        
+          
+        getMatchMeta(divs[0], data)
+        print("Running Test for getMatchMeta")
+        self.assertTrue(data['details'] is not None)
+
+    
         
 if __name__ == '__main__':
     unittest.main()
