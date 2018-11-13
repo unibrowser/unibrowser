@@ -19,7 +19,7 @@ DESC = 'desc'
 ADDRESS = 'address'
 
 
-def scrape_row_data(soup, cur_bus_name, location_info):
+def scrape_row_data(soup, cur_bus_name, location_info, lat_lng_config):
     route_tables = soup.select('table')
     lat_lngs = []
     headers = route_tables[0].select('thead tr th')
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     location_info = {}
     for bus_name, bus_url in json_config['bus_information'].items():
         cur_soup = get_html(bus_url)
-        scrape_row_data(cur_soup, bus_name, location_info)
+        scrape_row_data(cur_soup, bus_name, location_info, lat_lng_config)
     loc_info = []
     for loc_lat_lng, details in location_info.items():
         loc_info.append({
