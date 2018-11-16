@@ -1,6 +1,6 @@
 # app.py
 from flask import Flask, request, url_for, send_from_directory, render_template
-from scraping.faqscraperutil import convertToJsonList, saveToMongo
+from scraping.faqscraperutil import convertToFaqList, saveToMongo
 import re
 
 def create_app():
@@ -23,7 +23,7 @@ def create_app():
                 print(key, value)
                 if isQuestion.match(key) is not None: questions = value.split(",")
                 if isAnswer.match(key) is not None: answers = value.split(",")
-            jsonList = convertToJsonList(link, questions, answers)
+            jsonList = convertToFaqList(link, questions, answers)
             saveToMongo(jsonList, "faq")
             return render_template("feedqa.html")
     return app

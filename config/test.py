@@ -10,7 +10,8 @@ DATABASE_CONFIG = {
 }
 
 PROFESSOR_CONFIG = {
-    'structure': path.join(ETC, 'prof_input_structure.json')
+    'structure': path.join(ETC, 'prof_input_structure.json'),
+    'db_collection': 'professor'
 }
 
 FAQ_CONFIG = {
@@ -28,7 +29,7 @@ TWITTER_CONFIG = {
 }
 
 FREE_FOOD_CONFIG = {
-    'username': "@okstatefood",
+    'username': ["@okstatefood"],
     'max_tweets': 199,
     'date_select': {
         'today_list': ['noon', 'morning', 'today', 'tonight', 'this evening'],
@@ -41,7 +42,7 @@ EVENT_CONFIG = {
 }
 
 SPORTS_CONFIG = {
-    'links': path.join(ETC, 'sports-links.txt')
+    'links': path.join(ETC, 'sport-links.txt')
 }
 
 BUS_CONFIG = {

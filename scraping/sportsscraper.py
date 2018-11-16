@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from time import sleep
 from selenium.webdriver.chrome.options import Options
-from scraping.faqscrapperutil import saveToMongo
+from scraping.faqscraperutil import saveToMongo
 from config import SPORTS_CONFIG
 
 PROGRESS = "progress"

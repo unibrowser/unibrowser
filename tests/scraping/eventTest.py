@@ -3,7 +3,7 @@ import sys
 import os
 from scraping.events import extractRSSFeed, saveToMongo
 from bson import ObjectId
-from database.mongoclientclass import MongoClientClass
+from database.dao import UnibrowserDAO
 
 
 class eventTesting(unittest.TestCase):
@@ -14,7 +14,7 @@ class eventTesting(unittest.TestCase):
         self.assertTrue(len(events) > 0)
 
     def test_mongo_insert(self):
-        mongo_client_instance = MongoClientClass()
+        mongo_client_instance = UnibrowserDAO()
         # unit test for insert
         # 1: success, 0: failure
         self.assertEqual(mongo_client_instance.insert(collection='events',

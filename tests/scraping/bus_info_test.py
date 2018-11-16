@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.realpath('./'))
 import json
 import unittest
 from scraping.bus_info import scrape_row_data, save_loc_data
+import api.businfo as bus_api
 from config.test import BUS_CONFIG
 
 from scraping.scrape_utils import get_html
@@ -26,10 +27,7 @@ class testingScraping(unittest.TestCase):
 
         loc_info = []
         for loc_lat_lng, details in location_info.items():
-            loc_info.append({
-                'lat_lng': loc_lat_lng,
-                'details': details
-            })
+            loc_info.append(bus_api.BusInfo(lat_long=loc_lat_lng, details=details))
         self.assertTrue(len(loc_info) > 0)
 
         # unit test for save_loc_data()

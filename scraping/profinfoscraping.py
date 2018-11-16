@@ -1,15 +1,12 @@
 # Sets the execution path
-import sys
 import os
-sys.path.insert(0, os.path.realpath('./'))
-
 import json
 import requests
-
 from bs4 import BeautifulSoup
+import api.professors as profs_api
+from config import PROFESSOR_CONFIG, DATABASE_CONFIG
 
-from database.mongoclientclass import MongoClientClass
-from config import PROFESSOR_CONFIG
+profs_api.configure(dbhost=DATABASE_CONFIG['host'], dbport=DATABASE_CONFIG['port'])
 
 
 def get_html(url):
@@ -50,11 +47,10 @@ def scrape_prof_data(soup, data_structure):
     soup_prof_list = soup.select(data_structure['list']['select'])
     for soup_prof in soup_prof_list:
         try:
-            prof = {
-                'name': get_name(soup_prof, data_structure['name']),
-                'research': get_research(soup_prof, data_structure['research']),
-                'contact': get_contact(soup_prof, data_structure['contact'])
-            }
+            prof = profs_api.Professor()
+            prof.name = get_name(soup_prof, data_structure['name'])
+            prof.research = get_research(soup_prof, data_structure['research'])
+            prof.contact = get_contact(soup_prof, data_structure['contact'])
             cur_prof_list.append(prof)
         except Exception as e:
             print("Exception occured for ", data_structure)
@@ -64,8 +60,7 @@ def scrape_prof_data(soup, data_structure):
 
 def save_prof_data(professors):
     try: 
-        mongo_client_instance = MongoClientClass(host='localhost', port=27017, db='unibrowser')
-        mongo_client_instance.insert(collection='professor', documents=professors)
+        profs_api.insert_many(professors)
     except Exception as e:
         print(e)
         # print("inside save_prof_data: 0 (exception)")

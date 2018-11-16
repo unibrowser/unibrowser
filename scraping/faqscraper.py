@@ -1,7 +1,7 @@
 import re
 import httplib2
 from bs4 import BeautifulSoup
-from scraping.faqscraperutil import stripExtra, removeDuplicates, removeBlackListedQuestions, getBlackListedQuestions, convertToJsonList, saveToMongo
+from scraping.faqscraperutil import stripExtra, removeDuplicates, removeBlackListedQuestions, getBlackListedQuestions, convertToFaqList, saveToMongo
 from config import FAQ_CONFIG
 
 
@@ -103,7 +103,6 @@ def getFaqOfLink(link):
 
 if __name__ == "__main__":
     links = FAQ_CONFIG['links']
-    collection = FAQ_CONFIG['db_collection']
     with open(links, 'r') as myfile:
         FAQ_LINKS = myfile.read().split('\n')
 
@@ -111,8 +110,8 @@ if __name__ == "__main__":
     for i in range(0, len(FAQ_LINKS)):
         link = FAQ_LINKS[i]
         questions, answerList = getFaqOfLink(link)
-        jsonList = convertToJsonList(link, questions, answerList)
+        jsonList = convertToFaqList(link, questions, answerList)
         faqJsonList.extend(jsonList)
 
 #     saveJsonToFile(faqJsonList, "output.txt")
-    saveToMongo(faqJsonList, collection)
+    saveToMongo(faqJsonList)

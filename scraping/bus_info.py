@@ -3,9 +3,11 @@ import sys
 import os
 import json
 from datetime import datetime
-from database.mongoclientclass import MongoClientClass
+import api.businfo as bus_api
 from scraping.scrape_utils import get_html
-from config import BUS_CONFIG
+from config import BUS_CONFIG, DATABASE_CONFIG
+
+bus_api.configure(dbhost=DATABASE_CONFIG['host'], dbport=DATABASE_CONFIG['port'])
 
 
 WEEK_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
@@ -58,9 +60,7 @@ def scrape_row_data(soup, cur_bus_name, location_info, lat_lng_config):
 
 def save_loc_data(locations):
     try:
-        mongo_client_instance = MongoClientClass()
-        mongo_client_instance.insert(
-            collection=BUS_CONFIG['db_collection'], documents=locations)
+        bus_api.insert_many(locations)
     except Exception as e:
         print(e)
         # print("inside save_prof_data: 0 (exception)")
@@ -83,9 +83,5 @@ if __name__ == '__main__':
         scrape_row_data(cur_soup, bus_name, location_info, lat_lng_config)
     loc_info = []
     for loc_lat_lng, details in location_info.items():
-        loc_info.append({
-            'lat_lng': loc_lat_lng,
-            'details': details
-        })
-    print(json.dumps(loc_info, indent=4))
+        loc_info.append(bus_api.BusInfo(lat_long=loc_lat_lng, details=details))
     save_loc_data(loc_info)
