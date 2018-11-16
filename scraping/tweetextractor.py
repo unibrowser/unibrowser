@@ -1,13 +1,11 @@
 import tweepy
-from pymongo import MongoClient
-from pymongo.results import InsertManyResult
-from pymongo.errors import BulkWriteError
-import sys
-import os
+import api.freefood as freefood_api
 import datefinder
 import datetime
 from datetime import timedelta
 from config import TWITTER_CONFIG, FREE_FOOD_CONFIG, DATABASE_CONFIG
+
+freefood_api.configure(dbhost=DATABASE_CONFIG['host'], dbport=DATABASE_CONFIG['port'])
 
 # Twitter API credentials
 consumer_key = TWITTER_CONFIG['consumer_key']
@@ -24,35 +22,7 @@ auth.set_access_token(access_key, access_secret)
 # Calling tweepy API
 api = tweepy.API(auth)
 
-# Class with Database functions
-
-
-class MongoClientClass:
-
-    def __init__(self, host, port, db):
-        client = MongoClient(host, port)
-        self.db = client[db]
-
-    # Function to delete the documents
-    def delete(self, collection):
-        result = self.db[collection].delete_many({})
-        print('Documents deleted from the collection: ', result.deleted_count)
-        return result.acknowledged
-
-    # Function to insert multiple documents
-    def insert(self, collection, documents):
-        try:
-            result = self.db[collection].insert_many(documents)
-            if isinstance(result, InsertManyResult):
-                return 1
-            return 0
-        except BulkWriteError as exc:
-            print(exc.details)
-            exit()
-
 # Extract tweets
-
-
 def get_tweets(user_account):
     number_of_tweets = FREE_FOOD_CONFIG['max_tweets']
     tweet_info = []
@@ -102,23 +72,18 @@ def store_tweets(tweet_info):
                 event_date.year, event_date.month, event_date.day)
 
             if event_date_trun >= datetime.datetime.today().date():
-                tweet_dict = dict()   # Store tweet information in a dictionary
-
                 # Store the required fields
-                tweet_dict["event_date"] = event_date
-                tweet_dict["id"] = tweet.id_str
-                tweet_url = "https://twitter.com/statuses/"+tweet.id_str  # URL
-                tweet_dict["url"] = tweet_url
-                tweet_dict["screen_name"] = tweet.user.screen_name
+                info = freefood_api.FreeFoodInfo()
+                info.title = tweet.user.screen_name
+                info.date = event_date
+                info.link = "https://twitter.com/statuses/" + tweet.id_str  # URL
+                info.location = "OSU"
+                info.description = tweet.full_text
                 media = tweet.entities.get('media', [])
                 if(len(media) > 0):
-                    tweet_dict["media_url"] = media[0]['media_url']
-                else:
-                    tweet_dict["media_url"] = ""
-
-                tweet_dict["description"] = tweet.full_text
-                tweet_dict["location"] = "OSU"
-                store_tweet.append(tweet_dict)
+                    info.media_url = media[0]['media_url']
+                #tweet_dict["id"] = tweet.id_str
+                store_tweet.append(info)
     print("no of tweets fetched: ", len(store_tweet))
     return store_tweet
 
@@ -158,9 +123,7 @@ def extract_date(tweet):
 if __name__ == '__main__':
     try:
         # Delete existing documents from the collection freefood
-        mongo_client_instance = MongoClientClass(
-            host=DATABASE_CONFIG['host'], port=DATABASE_CONFIG['port'], db=DATABASE_CONFIG['dbname'])
-        res = mongo_client_instance.delete(collection='freefood')
+        freefood_api.clear()
 
         for username in FREE_FOOD_CONFIG['username']:
             print(username)
@@ -170,8 +133,7 @@ if __name__ == '__main__':
             extracted_docs = store_tweets(tweet_obj)
 
             if len(extracted_docs) != 0:
-                res = mongo_client_instance.insert(
-                    collection='freefood', documents=extracted_docs)
+                freefood_api.insert_many(extracted_docs)
             else:
                 print("No tweets found.")
 

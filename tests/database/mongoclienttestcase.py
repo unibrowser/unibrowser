@@ -1,12 +1,12 @@
 # mongoclienttestcase.py
 import unittest
 
-from database.mongoclientclass import MongoClientClass
+from database.dao import UnibrowserDAO
 
 
 class MongoClientTestCase(unittest.TestCase):
     def setUp(self):
-        self.mongoClientInstance = MongoClientClass()
+        self.mongoClientInstance = UnibrowserDAO()
 
     def tearDown(self):
         self.mongoClientInstance = None

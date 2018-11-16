@@ -2,8 +2,10 @@ import json
 import re
 import nltk
 from nltk.corpus import stopwords
-from database.mongoclientclass import MongoClientClass
-from config import FAQ_CONFIG
+import api.faqs as faq_api
+from config import FAQ_CONFIG, DATABASE_CONFIG
+
+faq_api.configure(dbhost=DATABASE_CONFIG['host'], dbport=DATABASE_CONFIG['port'])
 
 LINK = 'link'
 TAGS = 'tags'
@@ -34,28 +36,24 @@ def getTags(sentence):
 # print(getTags("Hello my name is Anand?"))
 
 
-def convertToJsonList(link, questions, answerList):
-    jsonDataList = []
-    tagsList = getTags(questions)
+def convertToFaqList(link, questions, answerList):
+    faq_data_list = []
+    tags_list = getTags(questions)
     for i in range(0, len(questions)):
-        data = {}
         question = questions[i]
         answer = answerList[i]
-        nouns = getTags(question)
-
-        data[LINK] = link
-        data[TAGS] = tagsList[i]
-        data[TITLE] = question
-        data[ANSWER] = answer
-        print(data)
-        jsonDataList.append(data)
-    return jsonDataList
+        faq = faq_api.Faq()
+        faq.title = question
+        faq.answer = answer
+        faq.link = link
+        faq.tags = tags_list[i]
+        faq_data_list.append(faq)
+    return faq_data_list
 
 
-def saveToMongo(jsonList, FAQ):
+def saveToMongo(jsonList):
     try:
-        mongo_client_instance = MongoClientClass()
-        mongo_client_instance.insert(collection=FAQ, documents=jsonList)
+        faq_api.insert_many(jsonList)
     except Exception as e:
         print(e)
         print("inside save_prof_data: 0 (exception)")

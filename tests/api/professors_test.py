@@ -25,11 +25,6 @@ class TestProfessorsApi(unittest.TestCase):
         assert profs.insert_many(data)
 
     def test_clear(self):
-        data = self.generate_data(5)
-        # TODO: find a better way to unit test this...this isn't really "unit testing"...
-        mongo = pymongo.MongoClient(DATABASE_CONFIG['host'], DATABASE_CONFIG['port'])
-        mongo[DATABASE_CONFIG['dbname']][PROFESSOR_CONFIG['db_collection']
-                                         ].insert_many(map(profs.Professor.to_object, data))
         assert profs.clear()
 
 

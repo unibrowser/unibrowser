@@ -1,38 +1,42 @@
-
-# Sets the execution path
-import sys
 import os
 import feedparser
-from database.mongoclientclass import MongoClientClass
-from config import DATABASE_CONFIG, EVENT_CONFIG
+import api.events as events_api
+import datetime
+from config import DATABASE_CONFIG
 
 campusLife = "https://today.oregonstate.edu/releases/feed/campus-life"
 eventsUrl = "https://events.oregonstate.edu/calendar.xml"
 
+# Configure the API to use the correct database
+events_api.configure(dbhost=DATABASE_CONFIG['host'], dbport=DATABASE_CONFIG['port'])
+
 
 def extractRSSFeed():
-    events = feedparser.parse(eventsUrl)
-    eventsList = events.entries
+    events_raw = feedparser.parse(eventsUrl)
+    events_list = events_raw.entries
+    events = []
     # Removing unnecessary fields
-    for event in eventsList:
-        del(event["links"])
-        del(event["summary"])
-        del(event["id"])
-        del(event["published"])
-        del(event["summary_detail"])
-        del(event["title_detail"])
-        del(event["guidislink"])
-        del(event["updated"])
-        del(event["updated_parsed"])
-    return eventsList
+    for event in events_list:
+        date_raw = event["published_parsed"]
+        date = datetime.datetime(date_raw[0], date_raw[1], date_raw[2])
+        e = events_api.Event()
+        e.title = event["title"]
+        e.date = date
+        try:
+            e.lat = float(event["geo_lat"])
+            e.long = float(event["geo_long"])
+        except BaseException:
+            pass
+        e.link = event["link"]
+        e.image_url = event["media_content"][0]["url"]
+        e.tags = []
+        events.append(e)
+    return events
 
 
-def saveToMongo(jsonList, COLLECTION_NAME):
+def saveToMongo(events_list):
     try:
-        mongo_client_instance = MongoClientClass(
-            host=DATABASE_CONFIG['host'], port=DATABASE_CONFIG['port'], db=DATABASE_CONFIG['dbname'])
-        mongo_client_instance.insert(
-            collection=COLLECTION_NAME, documents=jsonList)
+        events_api.insert_many(events_list)
     except Exception as e:
         print(e)
         print("inside save_event_data: 0 (exception)")
@@ -43,5 +47,5 @@ def saveToMongo(jsonList, COLLECTION_NAME):
 
 if __name__ == "__main__":
 
-    eventJsonList = extractRSSFeed()
-    saveToMongo(eventJsonList, EVENT_CONFIG['db_collection'])
+    events_list = extractRSSFeed()
+    saveToMongo(events_list)

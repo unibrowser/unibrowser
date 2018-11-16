@@ -1,28 +1,32 @@
 """
-FAQ Unibrowser API
+Free Food Unibrowser API
 """
 from typing import List
 from database.dao import UnibrowserDAO
+import datetime
 
-__collection: str = 'faq'
+__collection: str = 'freefood'
 __host: str = 'localhost'
 __port: int = 27017
 
 
-class Faq(object):
+class FreeFoodInfo(object):
     """
-    Represents a question/answer pair
+    Represents information about available free food
     """
 
-    def __init__(self, title: str = None, link: str = None, tags: List[str] = None, answer: str = None):
+    def __init__(self, title: str = None, date: datetime.datetime = None,
+                 description: str = None, location: str = None, link: str = None, media_url: str = None):
         self.title = title
+        self.date = date
+        self.description = description
+        self.location = location
         self.link = link
-        self.tags = tags
-        self.answer = answer
+        self.media_url = media_url
 
     def to_object(self) -> object:
         """
-        :returns: the JSON object representation of the FAQ
+        :returns: the JSON object representation of the FreeFoodInfo
         """
         return self.__dict__
 
@@ -40,31 +44,31 @@ def configure(dbhost: str = None, dbport: int = None):
         __port = dbport
 
 
-def insert(faq: Faq) -> bool:
+def insert(info: FreeFoodInfo) -> bool:
     """
-    Inserts a single FAQ object in Unibrowser's persistent storage.
-    :param faq: the FAQ to insert
+    Inserts a single FreeFoodInfo object in Unibrowser's persistent storage.
+    :param info: the FreeFoodInfo to insert
     :returns: true if the insert succeeds, false otherwise
     """
     mongodb = UnibrowserDAO(host=__host, port=__port)
-    result = mongodb.insert(collection=__collection, documents=[faq.to_object()])
+    result = mongodb.insert(collection=__collection, documents=[info.to_object()])
     return result == 1
 
 
-def insert_many(faqs: List[Faq]) -> bool:
+def insert_many(infos: List[FreeFoodInfo]) -> bool:
     """
-    Inserts multiple FAQ objects in Unibrowser's persistent storage.
-    :param faqs: the list of FAQs to insert
+    Inserts multiple FreeFoodInfo objects in Unibrowser's persistent storage.
+    :param infos: the list of FreeFoodInfo objects to insert
     :returns: true if the insert succeeds, false otherwise
     """
     mongodb = UnibrowserDAO(host=__host, port=__port)
-    result = mongodb.insert(collection=__collection, documents=map(Faq.to_object, faqs))
+    result = mongodb.insert(collection=__collection, documents=map(FreeFoodInfo.to_object, infos))
     return result == 1
 
 
 def clear() -> bool:
     """
-    Completely removes all FAQ information from persistent storage.
+    Completely removes all FreeFoodInfo information from persistent storage.
     :returns: true if the operation succeeds, false otherwise
     """
     mongodb = UnibrowserDAO(host=__host, port=__port)

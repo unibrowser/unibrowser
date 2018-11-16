@@ -29,7 +29,7 @@ TWITTER_CONFIG = {
 }
 
 FREE_FOOD_CONFIG = {
-    'username': "@okstatefood",
+    'username': ["@okstatefood"],
     'max_tweets': 199,
     'date_select': {
         'today_list': ['noon', 'morning', 'today', 'tonight', 'this evening'],

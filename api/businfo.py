@@ -1,26 +1,26 @@
 """
-Unibrowser Professors API
+Bus Information Unibrowser API
 """
 from typing import List
 from database.dao import UnibrowserDAO
 
-__collection = 'professor'
-__host = 'localhost'
-__port = 27017
+__collection: str = 'businfo'
+__host: str = 'localhost'
+__port: int = 27017
 
-class Professor(object):
+
+class BusInfo(object):
     """
-    Represents a professor that is searchable in the Unibrowser database
+    Represents a question/answer pair
     """
 
-    def __init__(self, name=None, research=None, contact=None):
-        self.name = name
-        self.research = research
-        self.contact = contact
+    def __init__(self, lat_long = None, details = None):
+        self.lat_long = lat_long
+        self.details = details
 
     def to_object(self) -> object:
         """
-        :returns: the JSON object representation of the professor
+        :returns: the JSON object representation of the FAQ
         """
         return self.__dict__
 
@@ -38,33 +38,33 @@ def configure(dbhost: str = None, dbport: int = None):
         __port = dbport
 
 
-def insert(prof: Professor) -> bool:
+def insert(info: BusInfo) -> bool:
     """
-    Inserts a single professor object in Unibrowser's persistent storage.
-    :param p: the professor to insert
+    Inserts a single BusInfo object in Unibrowser's persistent storage.
+    :param faq: the BusInfo to insert
     :returns: true if the insert succeeds, false otherwise
     """
     mongodb = UnibrowserDAO(host=__host, port=__port)
-    result = mongodb.insert(collection=__collection, documents=[prof.to_object()])
+    result = mongodb.insert(collection=__collection, documents=[info.to_object()])
     return result == 1
 
 
-def insert_many(profs: List[Professor]) -> bool:
+def insert_many(infos: List[BusInfo]) -> bool:
     """
-    Inserts multiple professor objects in Unibrowser's persistent storage.
-    :param p: the list of professors to insert
+    Inserts multiple BusInfo objects in Unibrowser's persistent storage.
+    :param faqs: the list of BusInfo objects to insert
     :returns: true if the insert succeeds, false otherwise
     """
     mongodb = UnibrowserDAO(host=__host, port=__port)
-    result = mongodb.insert(collection=__collection, documents=map(Professor.to_object, profs))
+    result = mongodb.insert(collection=__collection, documents=map(BusInfo.to_object, infos))
     return result == 1
 
 
 def clear() -> bool:
     """
-    Completely removes all professor information from persistent storage.
+    Completely removes all BusInfo information from persistent storage.
     :returns: true if the operation succeeds, false otherwise
     """
     mongodb = UnibrowserDAO(host=__host, port=__port)
-    result = mongodb.delete(collection=__collection)
-    return result >= 0
+    results = mongodb.delete(collection=__collection)
+    return results >= 0
