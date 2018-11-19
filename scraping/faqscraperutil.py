@@ -3,7 +3,7 @@ import re
 import nltk
 from nltk.corpus import stopwords
 import api.faqs as faq_api
-from config import FAQ_CONFIG, DATABASE_CONFIG
+from config.test import FAQ_CONFIG, DATABASE_CONFIG
 
 faq_api.configure(dbhost=DATABASE_CONFIG['host'], dbport=DATABASE_CONFIG['port'])
 
@@ -31,6 +31,7 @@ def getTags(sentence):
         tokens = [t for t in tokenized if t not in sw]
         if len(tokens) > 0:
             tagsList.extend(tokens)
+    # print(tagsList)
     return tagsList
 
 # print(getTags("Hello my name is Anand?"))
@@ -38,7 +39,6 @@ def getTags(sentence):
 
 def convertToFaqList(link, questions, answerList):
     faq_data_list = []
-    tags_list = getTags(questions)
     for i in range(0, len(questions)):
         question = questions[i]
         answer = answerList[i]
@@ -46,7 +46,9 @@ def convertToFaqList(link, questions, answerList):
         faq.title = question
         faq.answer = answer
         faq.link = link
-        faq.tags = tags_list[i]
+        faq.tags = getTags(question)
+        # attrs = vars(faq)
+        # print(', '.join("%s: %s" % item for item in attrs.items()))
         faq_data_list.append(faq)
     return faq_data_list
 
