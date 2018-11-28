@@ -48,11 +48,37 @@ def get_word_clusters(lemmas, threshold):
                         slot_count += 1
     return lemma_to_slot_map, word_clusters
 
+	
+def lemmatize_text(noun_phrases):
+    """
+    Returns lemmatized text for the passed noun phrases.
+    :noun phrase: list of noun phrases 
+    :return: lemmatized text
+    """
+    lemmatize_text_dict = {}
+    for each_noun_phrase in noun_phrases:
+        lemma_val = []
+        doc = nlp(each_noun_phrase) 
+
+        for chunk in doc.noun_chunks:
+            key = chunk.root.text
+            if key in lemmatize_text_dict:
+                lemma_val=lemmatize_text_dict[key]
+            lemma_val.append(chunk)        
+            lemmatize_text_dict[chunk.root.text] = lemma_val      
+    return lemmatize_text_dict
+
 
 if __name__ == '__main__':
     """
     dry run doing basic testing the defined functions
     """
+
+    noun_phrases = \
+        ["smelly cats","pink cats","funny dogs","natural language processing","computer processing"]
+    lemma_text_dict = lemmatize_text(noun_phrases)
+    print(lemma_text_dict)
+    
     thres = 0.5
     lemma_dict = \
         {
