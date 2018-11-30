@@ -3,12 +3,14 @@ import sys
 import os
 # unit testing
 import unittest
+from pymongo import MongoClient
 
 # Sets the execution path
 sys.path.insert(0, os.path.realpath('./'))
 
 # internal modulesunit
-from nlp.utils import get_word_clusters, lemmatize_text
+from nlp.utils import get_word_clusters, lemmatize_text, get_question_data
+
 
 class TestUtils(unittest.TestCase):
     """
@@ -40,6 +42,14 @@ class TestUtils(unittest.TestCase):
         self.assertTrue(lemma_text.__contains__("processing"))
         self.assertFalse(lemma_text.__contains__("cat"))
         self.assertTrue(len(lemma_text) > 0)
+
+    def test_get_question_data(self):
+        """
+        Tests if the data is being fetched from the database.
+        """
+        question, answer = get_question_data('faq')
+        self.assertTrue(len(question) > 0)
+        self.assertTrue(len(answer) > 0)
 
 if __name__ == '__main__':
     """

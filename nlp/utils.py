@@ -5,15 +5,28 @@ Contains all the utility functions for our NLP tasks
 # for system path
 import sys
 import os
-
-import spacy
-
 # Sets the execution path
 sys.path.insert(0, os.path.realpath('./'))
+
+import spacy
+import pymongo
+from pymongo import MongoClient
+# from config.prod import DATABASE_CONFIG
 
 # Download: python -m spacy download en_core_web_sm
 nlp = spacy.load('en_core_web_sm')
 
+client = MongoClient('mongodb://localhost:27017')
+db = client['unibrowser']
+
+def get_question_data(collection_name):
+    questions = []
+    answers = []
+    collection = db[collection_name]
+    for entry in collection.find():
+        questions.append(entry['title'])
+        answers.append(entry['answer'])
+    return questions, answers
 
 def get_word_clusters(lemmas, threshold):
     """
@@ -73,6 +86,7 @@ if __name__ == '__main__':
     """
     dry run doing basic testing the defined functions
     """
+    question, answer = get_question_data('faq')
 
     noun_phrases = \
         ["smelly cats","pink cats","funny dogs","natural language processing","computer processing"]
@@ -88,3 +102,4 @@ if __name__ == '__main__':
     lemma_slot, clusters = get_word_clusters(lemma_dict, thres)
     print('lemma_slot_map:', lemma_slot)
     print('word_clusters:', clusters)
+
