@@ -1,31 +1,64 @@
 """
 Sports Unibrowser API
 """
+import json
 from typing import List
 from database.dao import UnibrowserDAO
-
-__collection: str = 'sportsinfo'
+import datetime
+__collection: str = 'sportsevent'
 __host: str = 'localhost'
 __port: int = 27017
 
-
-class SportInfo(object):
+class Team:
     """
-    Represents information about a sport event pair
+    Represents team information about a match eg: home & away
     """
-
-    def __init__(self, sport_id: int = None, sport_label: str = None, sport_name: str = None, tags: List[str] = None):
-        self.sport_id = sport_id
-        self.sport_label = sport_label
-        self.sport_name = sport_name
-        self.tags = tags
-
+    def __init__(self, logo_url: str = None, name: str = None, score: str = None):
+        self.logo_url = logo_url
+        self.name = name
+        self.score = score
+    
     def to_object(self) -> object:
         """
         :returns: the JSON object representation of the SportInfo
         """
         return self.__dict__
 
+    def jsonable(self):
+        return self.__dict__
+
+class SportEvent(object):
+    """
+    Represents information about a sport event pair
+    """
+
+    def __init__(self, sport: str = None, sport_id: int = None, sport_tags: List[str] = None, event_id: str = None, date: datetime.date = None, details: str = None, tickets: str = None, location: str = None, alt_title: str = None, home: Team = None, away: Team = None):
+        self.sport = sport
+        self.sport_tags = sport_tags
+        self.event_id = event_id
+        self.date = date
+        self.sport_id = sport_id
+        self.details = details
+        self.tickets = tickets
+        self.location = location
+        self.alt_title = alt_title
+        self.home = home
+        self.away = away
+
+    def to_object(self) -> object:
+        """
+        :returns: the JSON object representation of the SportInfo
+        """
+        
+        return json.dumps(self, default=ComplexHandler)
+
+    def jsonable(self):
+        return self.__dict__
+
+
+def ComplexHandler(Obj):
+    if hasattr(Obj, 'jsonable'):
+        return Obj.jsonable()
 
 def configure(dbhost: str = None, dbport: int = None):
     """
@@ -40,25 +73,25 @@ def configure(dbhost: str = None, dbport: int = None):
         __port = dbport
 
 
-def insert(info: SportInfo) -> bool:
+def insert(event: SportEvent) -> bool:
     """
     Inserts a single SportInfo object in Unibrowser's persistent storage.
     :param info: the SportInfo to insert
     :returns: true if the insert succeeds, false otherwise
     """
     mongodb = UnibrowserDAO(host=__host, port=__port)
-    result = mongodb.insert(collection=__collection, documents=[info.to_object()])
+    result = mongodb.insert(collection=__collection, documents=[event.to_object()])
     return result == 1
 
 
-def insert_many(infos: List[SportInfo]) -> bool:
+def insert_many(events : List[dict]) -> bool:
     """
     Inserts multiple SportInfo objects in Unibrowser's persistent storage.
     :param infos: the list of SportInfo objects to insert
     :returns: true if the insert succeeds, false otherwise
     """
     mongodb = UnibrowserDAO(host=__host, port=__port)
-    result = mongodb.insert(collection=__collection, documents=map(SportInfo.to_object, infos))
+    result = mongodb.insert(collection=__collection, documents=events)
     return result == 1
 
 

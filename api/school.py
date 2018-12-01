@@ -1,31 +1,29 @@
 """
-Sports Unibrowser API
+School Unibrowser API
 """
+
 from typing import List
 from database.dao import UnibrowserDAO
 
-__collection: str = 'sportsinfo'
+
+__collection: str = 'school_sports'
 __host: str = 'localhost'
 __port: int = 27017
 
-
-class SportInfo(object):
-    """
-    Represents information about a sport event pair
-    """
-
-    def __init__(self, sport_id: int = None, sport_label: str = None, sport_name: str = None, tags: List[str] = None):
-        self.sport_id = sport_id
-        self.sport_label = sport_label
-        self.sport_name = sport_name
-        self.tags = tags
+class School:
+    def __init__(self, school_id : int = None, name : str = None, abbr : str = None, image_url : str = None, sports_name_list : List[str] = None, sports_id_list : List[str] = None):
+        self.name = name
+        self.abbr = abbr
+        self.school_id = school_id
+        self.image_url = image_url
+        self.sports_name_list = sports_name_list
+        self.sports_id_list = sports_id_list
 
     def to_object(self) -> object:
         """
-        :returns: the JSON object representation of the SportInfo
+        :returns: the JSON object representation of School
         """
         return self.__dict__
-
 
 def configure(dbhost: str = None, dbport: int = None):
     """
@@ -40,7 +38,7 @@ def configure(dbhost: str = None, dbport: int = None):
         __port = dbport
 
 
-def insert(info: SportInfo) -> bool:
+def insert(info: School) -> bool:
     """
     Inserts a single SportInfo object in Unibrowser's persistent storage.
     :param info: the SportInfo to insert
@@ -51,14 +49,14 @@ def insert(info: SportInfo) -> bool:
     return result == 1
 
 
-def insert_many(infos: List[SportInfo]) -> bool:
+def insert_many(infos: List[School]) -> bool:
     """
     Inserts multiple SportInfo objects in Unibrowser's persistent storage.
     :param infos: the list of SportInfo objects to insert
     :returns: true if the insert succeeds, false otherwise
     """
     mongodb = UnibrowserDAO(host=__host, port=__port)
-    result = mongodb.insert(collection=__collection, documents=map(SportInfo.to_object, infos))
+    result = mongodb.insert(collection=__collection, documents=map(School.to_object, infos))
     return result == 1
 
 
@@ -70,3 +68,4 @@ def clear() -> bool:
     mongodb = UnibrowserDAO(host=__host, port=__port)
     results = mongodb.delete(collection=__collection)
     return results >= 0
+
