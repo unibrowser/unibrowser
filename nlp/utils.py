@@ -9,11 +9,8 @@ import os
 sys.path.insert(0, os.path.realpath('./'))
 
 import spacy
-import pymongo
 from pymongo import MongoClient
-import nltk
 import datetime
-# from config.prod import DATABASE_CONFIG
 
 # Download: python -m spacy download en_core_web_sm
 nlp = spacy.load('en_core_web_sm')
@@ -21,14 +18,34 @@ nlp = spacy.load('en_core_web_sm')
 client = MongoClient('mongodb://localhost:27017')
 db = client['unibrowser']
 
-def get_question_data(collection_name):
-    questions = []
-    answers = []
+
+def get_faq_data(collection_name):
+    """Get faq data from db"""
+    data = []
     collection = db[collection_name]
     for entry in collection.find():
-        questions.append(entry['title'])
-        answers.append(entry['answer'])
-    return questions, answers
+        data.append(entry['title'])
+        data.append(entry['answer'])
+    return data
+
+
+def get_lemmatize_dict(sentences):
+    """
+    Finds noun phrases from the data, generates lemmas and returns a lemma to word cluster map.
+    """
+    lemmatize_text_dict = {}
+    lemma_set = {}
+    for sentence in sentences:
+        # function to test if something is a noun
+        doc = nlp(sentence)
+        for chunk in doc.noun_chunks:
+            if chunk.root.text not in lemma_set:
+                lemma_set[chunk.root.text] = set()
+            lemma_set[chunk.root.text].add(chunk.text)
+    for lemma, phrases in lemma_set.items():
+        lemmatize_text_dict[lemma] = list(phrases)
+    return lemmatize_text_dict
+
 
 def get_word_clusters(lemmas, threshold):
     """
@@ -61,58 +78,47 @@ def get_word_clusters(lemmas, threshold):
                         word_clusters[slot_name] = lemmas[lemma1_key]
                         word_clusters[slot_name].extend(lemmas[lemma2_key])
                         slot_count += 1
-            print(lemma_to_slot_map)
-            print(word_clusters)
+                else:
+                    if lemma1_key not in lemma_to_slot_map:
+                        slot_name = "slot%d" % slot_count
+                        slot_count += 1
+                        word_clusters[slot_name] = []
+                        lemma_to_slot_map[lemma1_key] = slot_name
+                    word_clusters[lemma_to_slot_map[lemma1_key]].extend(lemmas[lemma1_key])
+                    if lemma2_key not in lemma_to_slot_map:
+                        slot_name = "slot%d" % slot_count
+                        slot_count += 1
+                        word_clusters[slot_name] = []
+                        lemma_to_slot_map[lemma2_key] = slot_name
+                    word_clusters[lemma_to_slot_map[lemma2_key]].extend(lemmas[lemma2_key])
     return lemma_to_slot_map, word_clusters
 
-	
-def lemmatize_text(noun_phrases):
-    """
-    Returns lemmatized text for the passed noun phrases.
-    :noun phrase: list of noun phrases 
-    :return: lemmatized text
-    """
-    lemmatize_text_dict = {}
-    for each_noun_phrase in noun_phrases:
-        lemma_val = []
-        doc = nlp(each_noun_phrase) 
 
-        for chunk in doc.noun_chunks:
-            key = chunk.root.text
-            if key in lemmatize_text_dict:
-                lemma_val=lemmatize_text_dict[key]
-            lemma_val.append(chunk)        
-            lemmatize_text_dict[chunk.root.text] = lemma_val      
-    return lemmatize_text_dict
-
-def find_nouns_in_query(lines_array):
+def save_faq_slots(lemma_slot, word_clusters):
     """
-    To find nouns from the data
+    save faq slot and word clusters in db
+    :param lemma_slot: lemma to slot map
+    :param word_clusters: slot-name to list of words
+    :return: 1 when it is able to save the results.
     """
-    noun_array = []
+    lemmas = [{'lemma_name': lemma_name, 'slot_name': slot_name} for lemma_name, slot_name in lemma_slot.items()]
+    clusters = [{'slot_name': slot_name, 'words': words} for slot_name, words in word_clusters.items()]
+    db['faq-word-clusters'].insert_many(clusters)
+    db['faq-lemmas-slots'].insert_many(lemmas)
+    return 1
 
-    for i in range(len(lines_array)):
-        # function to test if something is a noun
-        is_noun = lambda pos: pos[:2] == 'NN'
-        tokenized = nltk.word_tokenize(lines_array[i])
-        nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if is_noun(pos)] 
-        noun_array.extend(nouns)
-    noun_set = set(noun_array)
-    return list(noun_set)
 
 if __name__ == '__main__':
     """
     dry run doing basic testing the defined functions
     """
-    question, answer = get_question_data('faq')
-
-    noun_phrases = find_nouns_in_query(question)
-
-    lemma_text_dict = lemmatize_text(noun_phrases)
-    
-    thres = 0.5
+    faqs = get_faq_data('faq')
+    print('faqs:', len(faqs))
+    lemma_text_dict = get_lemmatize_dict(faqs)
+    print('lemmas:', len(lemma_text_dict))
+    thres = 0.8
     print(datetime.datetime.now())
     lemma_slot, clusters = get_word_clusters(lemma_text_dict, thres)
-    print('lemma_slot_map:', lemma_slot)
-    print('word_clusters:', clusters)
-
+    print('lemma_slot_map:', len(lemma_slot.items()))
+    print('word_clusters:', len(clusters.items()))
+    save_faq_slots(lemma_slot, clusters)
