@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.realpath('./'))
 import spacy
 from pymongo import MongoClient
 import datetime
+import random
 
 # Download: python -m spacy download en_core_web_sm
 nlp = spacy.load('en_core_web_sm')
@@ -43,7 +44,8 @@ def get_lemmatize_dict(sentences):
                 lemma_set[chunk.root.text] = set()
             lemma_set[chunk.root.text].add(chunk.text)
     for lemma, phrases in lemma_set.items():
-        lemmatize_text_dict[lemma] = list(phrases)
+        if len(phrases) > 10:
+            lemmatize_text_dict[lemma] = random.sample(list(phrases), 10)
     return lemmatize_text_dict
 
 
@@ -67,9 +69,13 @@ def get_word_clusters(lemmas, threshold):
                                 .append(word_clusters[lemma_to_slot_map[lemma2_key]])
                         else:
                             word_clusters[lemma_to_slot_map[lemma1_key]].extend(lemmas[lemma2_key])
+                        word_clusters[lemma_to_slot_map[lemma1_key]] = \
+                            random.sample(word_clusters[lemma_to_slot_map[lemma1_key]], 10)
                         lemma_to_slot_map[lemma2_key] = lemma_to_slot_map[lemma1_key]
                     elif lemma2_key in lemma_to_slot_map:
                         word_clusters[lemma_to_slot_map[lemma2_key]].extend(lemmas[lemma1_key])
+                        word_clusters[lemma_to_slot_map[lemma2_key]] = \
+                            random.sample(word_clusters[lemma_to_slot_map[lemma2_key]], 10)
                         lemma_to_slot_map[lemma1_key] = lemma_to_slot_map[lemma2_key]
                     else:
                         slot_name = "slot%d" % slot_count
@@ -77,6 +83,7 @@ def get_word_clusters(lemmas, threshold):
                         lemma_to_slot_map[lemma2_key] = slot_name
                         word_clusters[slot_name] = lemmas[lemma1_key]
                         word_clusters[slot_name].extend(lemmas[lemma2_key])
+                        word_clusters[slot_name] = random.sample(word_clusters[slot_name], 10)
                         slot_count += 1
                 else:
                     if lemma1_key not in lemma_to_slot_map:
@@ -85,12 +92,16 @@ def get_word_clusters(lemmas, threshold):
                         word_clusters[slot_name] = []
                         lemma_to_slot_map[lemma1_key] = slot_name
                     word_clusters[lemma_to_slot_map[lemma1_key]].extend(lemmas[lemma1_key])
+                    word_clusters[lemma_to_slot_map[lemma1_key]] = \
+                            random.sample(word_clusters[lemma_to_slot_map[lemma1_key]], 10)
                     if lemma2_key not in lemma_to_slot_map:
                         slot_name = "slot%d" % slot_count
                         slot_count += 1
                         word_clusters[slot_name] = []
                         lemma_to_slot_map[lemma2_key] = slot_name
                     word_clusters[lemma_to_slot_map[lemma2_key]].extend(lemmas[lemma2_key])
+                    word_clusters[lemma_to_slot_map[lemma2_key]] = \
+                        random.sample(word_clusters[lemma_to_slot_map[lemma2_key]], 10)
     return lemma_to_slot_map, word_clusters
 
 
