@@ -4,7 +4,7 @@ FAQ Unibrowser API
 from typing import List
 from database.dao import UnibrowserDAO
 
-__collection: str = 'faq'
+__collection: str = 'faqs'
 __host: str = 'localhost'
 __port: int = 27017
 
