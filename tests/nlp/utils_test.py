@@ -20,7 +20,7 @@ class TestUtils(unittest.TestCase):
         """
         Tests if the data is being fetched from the database.
         """
-        faqs = get_faq_data('faq')
+        faqs = get_faq_data('faqs')
         self.assertTrue(len(faqs) > 0)
 
         lemma_text_dict = get_lemmatize_dict(faqs)
