@@ -4,8 +4,22 @@
 import nltk
 #nltk.download('averaged_perceptron_tagger')
 
-def find_nouns_in_query():
+def find_nouns_in_query(lines_array):
+   
+    i = 0
 
+    for i in range(len(lines_array)):
+        # function to test if something is a noun
+        is_noun = lambda pos: pos[:2] == 'NN'
+
+        # do the nlp stuff
+        tokenized = nltk.word_tokenize(lines_array[i])
+        nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if is_noun(pos)] 
+
+        print(nouns)
+
+
+if __name__ == '__main__':
     lines_array = ['Do I have to add another year to my studies if I want to study abroad?', 'Do I have to study abroad in Engineering?',
                    'Where will I be living?', 'I dont want to study Engineering in another language can I still go abroad?', 'Isnt study abroad really expensive?',
                    'Will I be able to get the courses I need if I study abroad?',
@@ -40,25 +54,10 @@ def find_nouns_in_query():
                    'When are Mindfulness Meditation drop-ins offered?', 'What is the process for Emotional Support or Assistance Animals?', 'Where can I find information on upcoming CAPS events?',
                    'What do I do if I need to talk to someone when CAPS is closed?', 'What if I dont click with my counselor and want to request to change counselors?']
 
-    i = 0
-
-    for i in range(len(lines_array)):
-        # function to test if something is a noun
-        is_noun = lambda pos: pos[:2] == 'NN'
-
-        # do the nlp stuff
-        tokenized = nltk.word_tokenize(lines_array[i])
-        nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if is_noun(pos)] 
-
-        print(nouns)
+    print(len(lines_array))
+    find_nouns_in_query(lines_array)
 
 
-if __name__ == '__main__':
+
     
-    noun_phrases = ["smelly cats","pink cats","funny dogs","natural language processing","computer processing"]
-    is_noun = lambda pos: pos[:2] == 'NN'
-    # do the nlp stuff
-    tokenized = nltk.word_tokenize(lines_array[i])
-    nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if is_noun(pos)]
-    if nouns != 0:
-        find_nouns_in_query()
+

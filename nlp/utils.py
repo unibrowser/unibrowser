@@ -11,6 +11,8 @@ sys.path.insert(0, os.path.realpath('./'))
 import spacy
 import pymongo
 from pymongo import MongoClient
+import nltk
+import datetime
 # from config.prod import DATABASE_CONFIG
 
 # Download: python -m spacy download en_core_web_sm
@@ -59,6 +61,8 @@ def get_word_clusters(lemmas, threshold):
                         word_clusters[slot_name] = lemmas[lemma1_key]
                         word_clusters[slot_name].extend(lemmas[lemma2_key])
                         slot_count += 1
+            print(lemma_to_slot_map)
+            print(word_clusters)
     return lemma_to_slot_map, word_clusters
 
 	
@@ -81,6 +85,20 @@ def lemmatize_text(noun_phrases):
             lemmatize_text_dict[chunk.root.text] = lemma_val      
     return lemmatize_text_dict
 
+def find_nouns_in_query(lines_array):
+    """
+    To find nouns from the data
+    """
+    noun_array = []
+
+    for i in range(len(lines_array)):
+        # function to test if something is a noun
+        is_noun = lambda pos: pos[:2] == 'NN'
+        tokenized = nltk.word_tokenize(lines_array[i])
+        nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if is_noun(pos)] 
+        noun_array.extend(nouns)
+    noun_set = set(noun_array)
+    return list(noun_set)
 
 if __name__ == '__main__':
     """
@@ -88,18 +106,13 @@ if __name__ == '__main__':
     """
     question, answer = get_question_data('faq')
 
-    noun_phrases = \
-        ["smelly cats","pink cats","funny dogs","natural language processing","computer processing"]
+    noun_phrases = find_nouns_in_query(question)
+
     lemma_text_dict = lemmatize_text(noun_phrases)
-    print(lemma_text_dict)
     
     thres = 0.5
-    lemma_dict = \
-        {
-            'cat': ['cats', 'cat'],
-            'dog': ['dogs', 'dog']
-        }
-    lemma_slot, clusters = get_word_clusters(lemma_dict, thres)
+    print(datetime.datetime.now())
+    lemma_slot, clusters = get_word_clusters(lemma_text_dict, thres)
     print('lemma_slot_map:', lemma_slot)
     print('word_clusters:', clusters)
 
