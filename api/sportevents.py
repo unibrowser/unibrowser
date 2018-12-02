@@ -32,7 +32,7 @@ class SportEvent(object):
     Represents information about a sport event pair
     """
 
-    def __init__(self, sport: str = None, sport_id: int = None, sport_tags: List[str] = None, event_id: str = None, date: datetime.date = None, details: str = None, tickets: str = None, location: str = None, alt_title: str = None, home: Team = None, away: Team = None):
+    def __init__(self, sport: str = None, sport_id: int = None, sport_tags: List[str] = None, event_id: str = None, date: datetime.datetime = None, details: str = None, tickets: str = None, location: str = None, alt_title: str = None, home: Team = None, away: Team = None):
         self.sport = sport
         self.sport_tags = sport_tags
         self.event_id = event_id
@@ -84,7 +84,7 @@ def insert(event: SportEvent) -> bool:
     return result == 1
 
 
-def insert_many(events : List[dict]) -> bool:
+def insert_many(events) -> bool:
     """
     Inserts multiple SportInfo objects in Unibrowser's persistent storage.
     :param infos: the list of SportInfo objects to insert

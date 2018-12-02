@@ -3,7 +3,10 @@ import sys
 import re
 import json
 import datetime
-# sys.path.append('../')
+from bson import json_util
+from bson.json_util import loads
+
+sys.path.append('../')
 from api.school import School, insert
 from api.sportevents import Team, SportEvent, ComplexHandler, insert_many
 from sportscraperutils import loadJsonFromUrl, getSchool, cleanSportsIdArray, getEventsQueryLink, getListFromJsonArrayWIthKey, getSchoolPOPO
@@ -39,18 +42,18 @@ def getTeamsInfo(teams, jsonSchools):
     else:
         awayTeamId = teams[0]["id"]
         homeTeamId = teams[1]["id"]
-    home = Team()
-    away = Team()
+    home = {}
+    away = {}
     for school in jsonSchools["schools"]:
         if school["id"] == homeTeamId:
-            home.name = school["abbr"]
-            home.logo_url = school["images"]["tiny"]
+            home["name"] = school["abbr"]
+            home["logo_url"] = school["images"]["tiny"]
 
         if school["id"] == awayTeamId:
-            away.name = school["abbr"]
-            away.logo_url = school["images"]["tiny"]
+            away["name"] = school["abbr"]
+            away["logo_url"] = school["images"]["tiny"]
 
-        if home.name is not None and away.name is not None:
+        if home.get("name", None) is not None and away.get("name", None) is not None:
             break
 
 
@@ -82,42 +85,43 @@ def checkForScore(sportEventsJson, home, away, id):
     for event in sportEventsJson["data"]:
         if event["_id"] == id:
             if event.get("awayScore", None) is not None:
-                home.score = event["homeScore"]
-                away.score = event["awayScore"]
+                home["score"] = event["homeScore"]
+                away["score"] = event["awayScore"]
             return
             
 
 def saveSportsEventsForSport(sportEventsJson, sportPageJson, jsonSchools, sport_tags, sportsName):
     sportEventList = []
     for event in sportPageJson:
-        sportEvent = SportEvent()
-        sportEvent.event_id = event["id"]
-        sportEvent.sport = sportsName
-        sportEvent.sport_tags = sport_tags
-        sportEvent.details = event["url"]
-        sportEvent.sport_id = event["sport_id"]
+        sportEvent = {}
+        # sportEvent = SportEvent()
+        sportEvent["event_id"] = event["id"]
+        sportEvent["sport"] = sportsName
+        # sportEvent["sport_tags"] = sport_tags
+        sportEvent["details"] = event["url"]
+        sportEvent["sport_id"] = event["sport_id"]
 
         eventDate = event["event_date"]["start_time"]     
         dateFormatted = datetime.datetime.strptime(eventDate, '%Y-%m-%dT%H:%M:%SZ')
-        sportEvent.date = dateFormatted.isoformat()
-        sportEvent.location = getAddress(event["venue"])
+        sportEvent["date"] = dateFormatted
+        sportEvent["location"] = getAddress(event["venue"])
         if event.get("link", None) is not None and event["link"].get("url", None) is not None:
-            sportEvent.tickets = event["link"]["url"]
+            sportEvent["tickets"] = event["link"]["url"]
         # print(sportEvent.__dict__)
         teams = event.get("schools", None)
 
         if event.get("event_name", None) is not None:
-            sportEvent.alt_title = event["event_name"] 
+            sportEvent["alt_title"] = event["event_name"] 
         else:
             if teams is not None and len(teams) > 1:
                 home, away = getTeamsInfo(teams, jsonSchools)
                 checkForScore(sportEventsJson, home, away, event["id"])
-                sportEvent.away = away
-                sportEvent.home = home
+                sportEvent["away"] = away
+                sportEvent["home"] = home
 
         sportEventList.append(sportEvent)
     
-    insert_many(json.loads(json.dumps(sportEventList, default=ComplexHandler)))
+    insert_many(loads(json.dumps(sportEventList, default=json_util.default)))
 
     
 def startSportsScrapper(collegeName):

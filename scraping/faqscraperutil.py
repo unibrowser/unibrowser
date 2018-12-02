@@ -2,10 +2,13 @@ import json
 import re
 import nltk
 from nltk.corpus import stopwords
-import api.faqs as faq_api
-from config.test import FAQ_CONFIG, DATABASE_CONFIG
+import sys
+sys.path.append('../')
 
-faq_api.configure(dbhost=DATABASE_CONFIG['host'], dbport=DATABASE_CONFIG['port'])
+import api.faqs as faq_api
+# from config.test import FAQ_CONFIG, DATABASE_CONFIG
+
+# faq_api.configure(dbhost=DATABASE_CONFIG['host'], dbport=DATABASE_CONFIG['port'])
 
 LINK = 'link'
 TAGS = 'tags'
