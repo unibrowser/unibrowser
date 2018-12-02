@@ -9,3 +9,4 @@ __pycache__/
 !/config/prof_input_structure.json
 tests/Test results/
 .vscode/
+nlp/nlp_find_noun_keywords.py
