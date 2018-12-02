@@ -16,43 +16,21 @@ class TestUtils(unittest.TestCase):
     Class containing all the unit tests for the utility functions.
     """
 
-    def test_get_faq_data(self):
+    def test_utils(self):
         """
         Tests if the data is being fetched from the database.
         """
         faqs = get_faq_data('faq')
         self.assertTrue(len(faqs) > 0)
 
-    def test_lemmatize_text(self):
-        """
-        Tests if the lemmatize_dict function works as expected.
-        """
-        sentences = ["testing funny dogs", "doing natural language processing", "working on computer processing"]
-        lemmatize_text_dict = get_lemmatize_dict(sentences)
-        self.assertTrue(len(lemmatize_text_dict.items()) > 0)
+        lemma_text_dict = get_lemmatize_dict(faqs)
+        self.assertTrue(len(lemma_text_dict.items()) > 0)
 
-    def test_get_word_clusters(self):
-        """
-        Tests if the get_word_clusters function works as expected.
-        """
-        thres = 0.5
-        lemma_dict = \
-            {
-                'cat': ['cats', 'cat'],
-                'dog': ['dogs', 'dog']
-            }
-        lemma_slot, clusters = get_word_clusters(lemma_dict, thres)
-        self.assertTrue(len(lemma_slot.items()) == len(lemma_dict.items()))
+        thres = 0.8
+        lemma_slot, clusters = get_word_clusters(lemma_text_dict, thres)
+        self.assertTrue(len(lemma_slot.items()) == len(lemma_text_dict.items()))
         self.assertTrue(len(clusters) > 0)
 
-    def test_save_results(self):
-        thres = 0.5
-        lemma_dict = \
-            {
-                'cat': ['cats', 'cat'],
-                'dog': ['dogs', 'dog']
-            }
-        lemma_slot, clusters = get_word_clusters(lemma_dict, thres)
         res = save_faq_slots(lemma_slot, clusters)
         self.assertTrue(res == 1)
 

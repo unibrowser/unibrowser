@@ -124,12 +124,12 @@ if __name__ == '__main__':
     dry run doing basic testing the defined functions
     """
     faqs = get_faq_data('faq')
-    print('faqs:', len(faqs))
+    print('faqs:', faqs)
     lemma_text_dict = get_lemmatize_dict(faqs)
-    print('lemmas:', len(lemma_text_dict))
+    print('lemmas:', lemma_text_dict)
     thres = 0.8
     print(datetime.datetime.now())
     lemma_slot, clusters = get_word_clusters(lemma_text_dict, thres)
-    print('lemma_slot_map:', len(lemma_slot.items()))
-    print('word_clusters:', len(clusters.items()))
+    print('lemma_slot_map:', lemma_slot)
+    print('word_clusters:', clusters)
     save_faq_slots(lemma_slot, clusters)
