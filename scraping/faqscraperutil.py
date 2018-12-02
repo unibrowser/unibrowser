@@ -3,12 +3,10 @@ import re
 import nltk
 from nltk.corpus import stopwords
 import sys
-sys.path.append('../')
-
 import api.faqs as faq_api
-# from config.test import FAQ_CONFIG, DATABASE_CONFIG
+from config import FAQ_CONFIG, DATABASE_CONFIG
 
-# faq_api.configure(dbhost=DATABASE_CONFIG['host'], dbport=DATABASE_CONFIG['port'])
+faq_api.configure(dbhost=DATABASE_CONFIG['host'], dbport=DATABASE_CONFIG['port'])
 
 LINK = 'link'
 TAGS = 'tags'

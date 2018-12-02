@@ -2,7 +2,7 @@ import re
 import httplib2
 from bs4 import BeautifulSoup
 from faqscraperutil import stripExtra, removeDuplicates, removeBlackListedQuestions, getBlackListedQuestions, convertToFaqList, saveToMongo
-# from config import FAQ_CONFIG
+from config import FAQ_CONFIG
 
 
 def cleanQuestions(questions):
